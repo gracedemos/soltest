@@ -42,7 +42,7 @@ function AccountInfo() {
 
     return (
         <div className="AccountInfo bg-green-300 w-1/3 p-6 rounded m-auto">
-            <input type="text" placeholder="Address" value={address} className="p-4 rounded w-full mb-4"/>
+            <input type="text" placeholder="Address" value={address} readOnly={true} className="p-4 rounded w-full mb-4"/>
             <div className="bg-green-200 rounded p-4 flex justify-between mb-4">
                 <h1 className="flex items-center">
                     <img src="/sol.png" alt="" className="w-5 h-5 m-1"/>

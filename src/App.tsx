@@ -9,7 +9,7 @@ import {BraveWalletAdapter} from "@solana/wallet-adapter-brave";
 require("@solana/wallet-adapter-react-ui/styles.css");
 
 function App() {
-    const endpoint = "http://api.metaplex.solana.com/";
+    const endpoint = "https://api.metaplex.solana.com/";
     const wallets = [
         new TrustWalletAdapter(),
         new BraveWalletAdapter()
