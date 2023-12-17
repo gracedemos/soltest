@@ -7,13 +7,16 @@ function AccountInfo() {
     const {publicKey} = useWallet();
     const [balance, setBalance] = useState(0);
     const [samoBalance, setSamoBalance] = useState(0);
+    const [mobileBalance, setMobileBalance] = useState(0);
     const [address, setAddress] = useState("");
     const samoPublicKey = new PublicKey("7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU");
+    const mobilePublicKey = new PublicKey("mb1eu7TzEc71KxDpsmsKoucSSuuoGLv1drys1oP2jh6");
 
     useEffect(() => {
         if (!connection || !publicKey) {
             setBalance(0);
             setSamoBalance(0);
+            setMobileBalance(0);
             setAddress("");
             return;
         }
@@ -36,13 +39,25 @@ function AccountInfo() {
                             return;
                         }
                         setSamoBalance(bal.value.uiAmount);
+                    });
+            });
+
+        connection.getTokenAccountsByOwner(publicKey, {mint: mobilePublicKey})
+            .then(result => {
+                connection.getTokenAccountBalance(result.value[0].pubkey)
+                    .then(bal => {
+                        if (bal.value.uiAmount === null) {
+                            return;
+                        }
+                        setMobileBalance(bal.value.uiAmount);
                     })
             })
     }, [connection, publicKey]);
 
     return (
         <div className="AccountInfo bg-green-300 w-1/3 p-6 rounded m-auto">
-            <input type="text" placeholder="Address" value={address} readOnly={true} className="p-4 rounded w-full mb-4"/>
+            <input type="text" placeholder="Address" value={address} readOnly={true}
+                   className="p-4 rounded w-full mb-4"/>
             <div className="bg-green-200 rounded p-4 flex justify-between mb-4">
                 <h1 className="flex items-center">
                     <img src="/sol.png" alt="" className="w-5 h-5 m-1"/>
@@ -50,12 +65,19 @@ function AccountInfo() {
                 </h1>
                 <h1>{balance}</h1>
             </div>
-            <div className="bg-green-200 rounded p-4 flex justify-between">
+            <div className="bg-green-200 rounded p-4 flex justify-between mb-4">
                 <h1 className="flex items-center">
                     <img src="/samo.webp" alt="" className="w-5 h-5 m-1"/>
                     SAMO
                 </h1>
                 <h1>{samoBalance}</h1>
+            </div>
+            <div className="bg-green-200 rounded p-4 flex justify-between">
+                <h1 className="flex items-center">
+                    <img src="/mobile.webp" alt="" className="w-5 h-5 m-1"/>
+                    MOBILE
+                </h1>
+                <h1>{mobileBalance}</h1>
             </div>
         </div>
     )
